@@ -1,0 +1,20 @@
+server:
+  port: 8020
+
+logging:
+  level:
+    org:
+      springframework:
+        amqp: debug
+
+spring:
+  rabbitmq:
+    addresses: localhost:5672
+
+  cloud:
+    function: 
+      definition: integrationsConsumer
+    stream:
+      bindings:
+        integrationsConsumer-in-0:
+          destination: integrations

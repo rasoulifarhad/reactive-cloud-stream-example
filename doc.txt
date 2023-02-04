@@ -1,0 +1,74 @@
+## 1. rest-queue-consume program
+#
+#     a. client sent Message objects to 'rest-source' app
+#     b. MessageController accept request and sent to 'messages' topic throutgh  StreamBridge via 'message-out-0' binding   
+#     c. stream-consumer receved Message object from 'messages' topic and coinsume that
+#
+#
+#     *****************************************************************************                                  
+#     *   rest source                                                             *
+#     *                                                                           *
+#     *  ┌─────────────────┐                                                      *
+#     *  │    messages     │      ┌───────────────┐      ┌────────────────────┐   *    ┌─────────────┐
+#     *  │  output binding │ <--- │  StreamBridge │ <--- │  MessageController │ <-* -- │  Web Client │
+#     *  │ (message-out-0) │      │  ( Supplier ) │      │      ( web )       │   *    └─────────────┘
+#     *  └─────────────────┘      └───────────────┘      └────────────────────┘   *
+#     *           │                                                               *
+#     ************│****************************************************************
+#                 │
+#          _______V___________
+#         ()_________________()
+#           messages topic │   
+#                          │ 
+#                          │
+#                          v
+#     **************************************************************
+#     * stream consumer                                            * 
+#     *                                                            *
+#     *  ┌─────────────────────────┐                               *
+#     *  │    messagesConsumer     │      ┌──────────────────┐     *
+#     *  │     input binding       │ ---> │ messagesConsumer │     *
+#     *  │ (messagesConsumer-in-0) │      │   ( Consumer )   │     *
+#     *  └─────────────────────────┘      └──────────────────┘     *
+#     *                                                            * 
+#     **************************************************************
+#
+#
+## 2. source-processor-sink program
+#
+#     a. Source sent Alet objects to 'alerts' topic    
+#     b. Processor receive Alert object from 'alert' topic and convert to Integration object then send to 'integrations' topic
+#     c. Sink receved Integration object from 'Integrations' topic and coinsume that
+#
+#
+#     ***************************************************            ********************************************************************
+#     *   Source                                        *            *   Sink                                                           *
+#     *                                                 *            *                                                                  *
+#     *  ┌─────────────────────┐                        *            *  ┌─────────────────────────────┐                                 *
+#     *  │   alertSource       │      ┌──────────────┐  *            *  │    integrationsConsumer     │      ┌───────────────────────┐  *
+#     *  │  output binding     │ <--- │  alertSource │  *            *  │       input binding         │ ---> │  integrationsConsumer │  *
+#     *  │ (alertSource-out-0) │      │ ( Supplier ) │  *            *  │ (integrationsConsumer-in-0) │      │      ( Consumer )     │  *
+#     *  └─────────────────────┘      └──────────────┘  *            *  └─────────────────────────────┘      └───────────────────────┘  *
+#     *           │                                     *            *           ^                                                      *
+#     ************│**************************************            ************│*******************************************************
+#                 │                                                              │
+#          _______V___________                                           ________│______________
+#         ()_________________()                                         ()_____________________()
+#            alerts topic  │                                                integrations    ^
+#                          │                                                   topic        │ 
+#                          │                                                                │
+#                          │                                                                │
+#     *********************│****************************************************************│**********
+#     * Processor          │                                                                │         * 
+#     *                    v                                                                │         *
+#     *  ┌──────────────────────────┐                                 ┌───────────────────────────┐   *
+#     *  │    messagesProcessor     │      ┌───────────────────┐      │    messagesProcessor      │   *
+#     *  │     input binding        │ ---> │ messagesProcessor │ ---> │     output binding        │   *
+#     *  │ (messagesProcessor-in-0) │      │   ( Function )    │      │ (messagesProcessor-out-0) │   *
+#     *  └──────────────────────────┘      └───────────────────┘      └───────────────────────────┘   *
+#     *                                                                                               * 
+#     *************************************************************************************************
+#
+#
+#
+

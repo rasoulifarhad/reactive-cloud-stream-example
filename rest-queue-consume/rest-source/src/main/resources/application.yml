@@ -1,0 +1,12 @@
+server:
+  port: 8010
+
+logging:
+  level:
+    org:
+      springframework:
+        amqp: debug
+
+spring:
+  rabbitmq:
+    addresses: localhost:5672

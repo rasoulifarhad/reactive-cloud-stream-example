@@ -1,0 +1,17 @@
+logging:
+  level:
+    org:
+      springframework:
+        amqp: debug
+
+spring:
+  rabbitmq:
+    addresses: localhost:5672
+
+  cloud:
+    function:
+       definition: alertSource
+    stream:
+      bindings:
+        alertSource-out-0:
+          destination: alerts
