@@ -1,4 +1,4 @@
-## 1. rest-queue-consume program
+### 1. rest-queue-consume program
 #
 #     a. client sent Message objects to 'rest-source' app
 #     b. MessageController accept request and sent to 'messages' topic throutgh  StreamBridge via 'message-out-0' binding   
@@ -33,8 +33,23 @@
 #     *                                                            * 
 #     **************************************************************
 #
+## Run Sample : 
 #
-## 2. source-processor-sink program
+#  - Run docker
+#
+#    docker compose up -d 
+#
+#  - Run App
+#   
+#   ./mvnw clean install  -DskipTests
+#
+## Test Sample
+#
+#   $ curl  -H "Content-Type: application/json" localhost:8010/messages -w '\n' -d '{"content" : "This is the message content."}'
+#
+# 
+#
+### 2. source-processor-sink program
 #
 #     a. Source sent Alet objects to 'alerts' topic    
 #     b. Processor receive Alert object from 'alert' topic and convert to Integration object then send to 'integrations' topic
@@ -69,6 +84,14 @@
 #     *                                                                                               * 
 #     *************************************************************************************************
 #
+## Run Sample : 
 #
+#  - Run docker
+#
+#    docker compose up -d 
+#
+#  - Run App
+#   
+#   ./mvnw clean install  -DskipTests
 #
 
